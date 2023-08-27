@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Capital City Quiz</title>
+    <link rel="stylesheet" href="../static/styles.css">
+</head>
+<body>
+    <div class="container">        
+        <h1>Guess the Capital Game!</h1>
+        <p>What is the capital of {{ country }}?</p>  
+            <input type="text" id="capital" name="capital" placeholder="Please type a city name." required><br><br>
+            <button type="submit" id="capclick">Check your answer here</button> 
+        <div id="div">
+            <p id="message"></p>
+        </div>
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $('#capclick').click(function(){
+    var inputCapital = document.getElementById('capital').value;
+    $.ajax({
+        type: "POST",
+        url: "{% url 'check_capital' %}",
+        data: JSON.stringify({inputCapital:inputCapital}),
+        dataType: 'json',
+        contentType: "application/json; charset-ytf-8",
+        success: function(response){
+            console.log(response["message"])
+            document.getElementById('message').innerHTML=response["message"]
+            const messageDiv = document.getElementById('message');
+            messageDiv.style.display = 'block';
+        },
+        error: function () { 
+            alert(textStatus) 
+        }
+    })
+})
+</script>
+
+</html>
